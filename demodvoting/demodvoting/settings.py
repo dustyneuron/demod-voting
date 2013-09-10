@@ -130,6 +130,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     
     'pullrequests',
+    'voting',
 )
 
 # A sample logging configuration. The only tangible logging
