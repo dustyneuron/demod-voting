@@ -137,3 +137,18 @@ class AVTests(TestCase):
         self.assertEqual(len(winners), 1)
         change, prefs = winners[0]
         self.assertEqual((change.name, prefs), (f2.name, {1:2, 2:1}))
+
+    def test_av_priorities2(self):
+        u1, u2, u3, u4, u5 = self.users(5)
+        s1 = self.sections(1)
+        f1, f2, f3, f4, f5, backup = self.changes(6, s1)
+
+        set_user_votes(u1, s1, [f1, backup])
+        set_user_votes(u2, s1, [f2, backup])
+        set_user_votes(u3, s1, [f3, backup])
+        set_user_votes(u4, s1, [f4, backup])
+        set_user_votes(u5, s1, [f5, backup])
+        
+        winners = find_winners_av()
+        # This is why the AV voting system sucks
+        self.assertEqual(len(winners), 0)
