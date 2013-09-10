@@ -1,7 +1,7 @@
 from django.test import TestCase
 
 from voting.models import *
-from voting.av import tie_break
+from voting.av import tie_break, find_winners
 from django.contrib.auth.models import User
 
 class TieBreaks(TestCase):
@@ -84,7 +84,7 @@ class AVTests(TestCase):
         set_user_votes(u2, s1, [fix2, fix3])
         set_user_votes(u3, s1, [fix3])
                 
-        winners = find_winners_av()
+        winners = find_winners()
         self.assertEqual(len(winners), 1)
         change, prefs = winners[0]
         self.assertEqual((change.name, prefs), (fix3.name, {1:1, 2:1}))
@@ -101,7 +101,7 @@ class AVTests(TestCase):
         set_user_votes(u5, s1, [fix1, fix2])
         set_user_votes(u5, s2, [fix1, fix2])
                 
-        winners = find_winners_av()
+        winners = find_winners()
         self.assertEqual(len(winners), 1)
         change, prefs = winners[0]
         self.assertEqual((change.name, prefs), (fix1.name, {1:5}))
@@ -118,7 +118,7 @@ class AVTests(TestCase):
             
         set_user_votes(u5, s1, [f3])
 
-        winners = find_winners_av()
+        winners = find_winners()
         self.assertEqual(len(winners), 0)
 
     def test_av_priorities(self):
@@ -133,7 +133,7 @@ class AVTests(TestCase):
             
         set_user_votes(u5, s1, [f3, f2])
 
-        winners = find_winners_av()
+        winners = find_winners()
         self.assertEqual(len(winners), 1)
         change, prefs = winners[0]
         self.assertEqual((change.name, prefs), (f2.name, {1:2, 2:1}))
@@ -149,6 +149,6 @@ class AVTests(TestCase):
         set_user_votes(u4, s1, [f4, backup])
         set_user_votes(u5, s1, [f5, backup])
         
-        winners = find_winners_av()
+        winners = find_winners()
         # This is why the AV voting system sucks
         self.assertEqual(len(winners), 0)
