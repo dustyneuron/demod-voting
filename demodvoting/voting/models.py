@@ -14,10 +14,11 @@ def find_winners_av():
         sections[section] = []
         change, prefs = section.find_winner_av()
         if change:
-            print(section.name + ' winner is ' + change.name + ' (votes: ' + str(prefs) + ')')
+            #print(section.name + ' winner is ' + change.name + ' (votes: ' + str(prefs) + ')')
             winners[change] = prefs
         else:
-            print(section.name + ' had no winner')
+            #print(section.name + ' had no winner')
+            pass
         
     for change, prefs in winners.items():
         for affected_section in change.sections.all():
@@ -26,8 +27,6 @@ def find_winners_av():
     final_winners = {}
     for section, change_tuples in sections.items():
         if change_tuples:
-            #s = ' '.join([(change.name + ' (' + str(num_votes) + ' votes)') for (change, num_votes) in change_list])
-            #print(section.name + ' winning changes are ' + s)
             change, prefs = voting.av.tie_break(change_tuples)
             if change not in final_winners:
                 final_winners[change] = []
@@ -51,7 +50,7 @@ class Section(models.Model):
         if len(change_list) == 0:
             raise Exception('av tie break given empty change_list')
             
-        print('section tie break: ' + ' '.join([c.name for c in change_list]))
+        #print('section tie break: ' + ' '.join([c.name for c in change_list]))
         
         change_tuples = []
         for change in change_list:
@@ -63,7 +62,7 @@ class Section(models.Model):
                 
             change_tuples.append((change, prefs))
             
-        print('section tie break: ' + str(change_tuples))
+        #print('section tie break: ' + str(change_tuples))
         
         return voting.av.tie_break(change_tuples, find_worst)
         

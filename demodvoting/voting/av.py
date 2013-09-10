@@ -32,17 +32,17 @@ def tie_break(change_tuples, find_worst=False):
         if find_worst:
             for n in all_n:
                 group = dic[p][n]
-                candidates = candidates - (group)
-            
-                if len(candidates) <= 1:
-                    break                    
+                new_candidates = candidates - (group)
+                if len(new_candidates) == 0:
+                    break
+                candidates = new_candidates
         else:
             highest_n = all_n[0]
             group = dic[p][highest_n]
-            candidates = candidates & group
-        
-        if len(candidates) <= 1:
-            break
+            new_candidates = candidates & group
+            if len(new_candidates) == 0:
+                break
+            candidates = new_candidates
     
     if len(candidates) >= 1:
         c = random.choice(list(candidates))

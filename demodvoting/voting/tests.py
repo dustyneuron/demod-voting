@@ -26,6 +26,10 @@ class TieBreaks(TestCase):
         c, p = tie_break([('c1', {10:1}), ('c2', {24:1}), ('c3', {100:1, 9:2})])
         self.assertEqual((c, p), ('c3', {100:1, 9:2}))
 
+    def test_simple6(self):
+        c, p = tie_break([('c1', {10:1}), ('c2', {24:1}), ('c3', {100:1, 9:2})])
+        self.assertEqual((c, p), ('c3', {100:1, 9:2}))
+
 
 class AVTests(TestCase):    
     def users(self, count):
