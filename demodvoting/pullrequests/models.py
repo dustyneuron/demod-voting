@@ -3,11 +3,11 @@ from django.contrib.auth.models import User
 
 class GitUser(models.Model):
     user = models.OneToOneField(User, primary_key=True)
-    github_name = models.CharField(max_length=100)
+    github_name = models.CharField(max_length=100, unique=True)
 
 class PullRequest(models.Model):
     key = models.CharField(primary_key=True, max_length=200)
-    git_user = models.ForeignKey(GitUser)
+    git_user = models.ForeignKey(GitUser, blank=True, null=True)
         
     issue_id = models.IntegerField(default=0)
     title = models.CharField(max_length=200)
@@ -24,7 +24,7 @@ class PullRequest(models.Model):
         return self.key + ' state ' + str(self.state)
         
     @classmethod
-    def create(cls, pr_data):
+    def init_args(cls, pr_data):
         fields = [f.name for f in cls._meta.fields]
         fields.remove('git_user')
         fields.remove('key')
@@ -32,12 +32,12 @@ class PullRequest(models.Model):
         for f in fields:
             args[f] = pr_data[f]
             
-        args['git_user'] = GitUser.objects.get(github_name=pr_data['username'])
+        #args['git_user'] = GitUser.objects.get(github_name=pr_data['username'])
         args['key'] = cls.create_key(pr_data)
-        return cls(**args)
+        return args
 
     @classmethod
     def create_key(cls, pr_data):
-        return 'github/' + pr_data['repo'] + '/' + pr_data['issue_id']
+        return 'github/' + pr_data['repo'] + '/' + str(pr_data['issue_id'])
 
 
