@@ -1,7 +1,6 @@
-from django.contrib.auth.models import User
 from django.db import transaction
 
-from voting.models import Section, Change, Vote
+from voting.models import Section, Change, Vote, Voter
 
 import random
 
@@ -114,7 +113,7 @@ def section_tie_break(section, change_list, find_worst=False):
 
 @transaction.commit_on_success
 def section_find_winner(section):
-    win_threshold = User.objects.count() / 2
+    win_threshold = Voter.objects.count() / 2
     
     changes = Change.objects.filter(sections=section)
     first_votes = {}
@@ -137,7 +136,7 @@ def section_find_winner(section):
                     
         # re-assign votes for lowest_c to next pref
         for orig_vote in Vote.objects.filter(section=section, change=lowest_c):
-            alternates = Vote.objects.filter(user=orig_vote.user, section=section, priority__gt=orig_vote.priority)
+            alternates = Vote.objects.filter(voter=orig_vote.voter, section=section, priority__gt=orig_vote.priority)
             if len(alternates) > 0:
                 alt = alternates[0].change
                 if alt not in first_votes:

@@ -38,7 +38,9 @@ class AVTests(TestCase):
             u = User(username='user' + str(self.user_inc))
             self.user_inc += 1
             u.save()
-            results.append(u)
+            v = Voter(user=u)
+            v.save()
+            results.append(v)
         if count > 1:
             return tuple(results)
         return results[0]
