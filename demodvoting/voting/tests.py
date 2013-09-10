@@ -35,6 +35,7 @@ class AVTest(TestCase):
         set_user_votes(bob, html_section, [html_fix2, massive_fix])
         set_user_votes(dave, html_section, [massive_fix])
                 
-        r = html_section.find_winner_av()
-
-        self.assertEqual(r, (3, 2, True))
+        winners = find_winners_av()
+        self.assertEqual(len(winners), 1)
+        change, num_votes = winners[0]
+        self.assertEqual((change.name, num_votes), ('massive_fix', 2))
