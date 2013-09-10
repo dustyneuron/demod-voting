@@ -16,6 +16,8 @@ def find_winners_av():
         if change:
             print(section.name + ' winner is ' + change.name + ' (votes: ' + str(prefs) + ')')
             winners[change] = prefs
+        else:
+            print(section.name + ' had no winner')
         
     for change, prefs in winners.items():
         for affected_section in change.sections.all():
@@ -35,6 +37,8 @@ def find_winners_av():
     # return the highest scoring prefs
     for change, change_tuples in final_winners.items():
         _, prefs = voting.av.tie_break(change_tuples)
+        if not prefs:
+            raise Exception('prefs battling between identical changes failed')
         final_winners[change] = prefs
         
     return list(final_winners.items())
@@ -45,7 +49,9 @@ class Section(models.Model):
 
     def _section_tie_break(self, change_list, find_worst=False):
         if len(change_list) == 0:
-            raise Exception('av tie break given tuple_list')
+            raise Exception('av tie break given empty change_list')
+            
+        print('section tie break: ' + ' '.join([c.name for c in change_list]))
         
         change_tuples = []
         for change in change_list:
@@ -56,6 +62,8 @@ class Section(models.Model):
                 prefs[v.priority] += 1
                 
             change_tuples.append((change, prefs))
+            
+        print('section tie break: ' + str(change_tuples))
         
         return voting.av.tie_break(change_tuples, find_worst)
         

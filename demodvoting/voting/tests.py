@@ -27,11 +27,12 @@ class TieBreaks(TestCase):
         self.assertEqual((c, p), ('c3', {100:1, 9:2}))
 
 
-class AVTests(TestCase):
+class AVTests(TestCase):    
     def users(self, count):
         results = []
         for i in range(count):
-            u = User(username='user' + str(i + 1))
+            u = User(username='user' + str(self.user_inc))
+            self.user_inc += 1
             u.save()
             results.append(u)
         if count > 1:
@@ -41,7 +42,8 @@ class AVTests(TestCase):
     def sections(self, count):
         results = []
         for i in range(count):
-            u = Section(name='section' + str(i + 1))
+            u = Section(name='section' + str(self.section_inc))
+            self.section_inc += 1
             u.save()
             results.append(u)
         if count > 1:
@@ -51,7 +53,8 @@ class AVTests(TestCase):
     def changes(self, count, *sections):
         results = []
         for i in range(count):
-            u = Change(name='change' + str(i + 1))
+            u = Change(name='change' + str(self.change_inc))
+            self.change_inc += 1
             u.save()
             for s in sections:
                 u.sections.add(s)
@@ -59,32 +62,28 @@ class AVTests(TestCase):
         if count > 1:
             return tuple(results)
         return results[0]
+        
+    def setUp(self):
+        self.user_inc = 1
+        self.section_inc = 1
+        self.change_inc = 1
     
     def test_av_simple(self):
         u1, u2, u3 = self.users(3)
         
-        core_section, util_section, html_section = self.sections(3)
+        s1, s2, s3 = self.sections(3)
 
-        html_fix1 = Change(name='html_fix1')
-        html_fix1.save()
-        html_fix1.sections.add(html_section)
-
-        html_fix2 = Change(name='html_fix2')
-        html_fix2.save()
-        html_fix2.sections.add(html_section)
-
-        massive_fix = Change(name='massive_fix')
-        massive_fix.save()
-        massive_fix.sections.add(core_section, util_section, html_section)
-
-        set_user_votes(u1, html_section, [html_fix1])
-        set_user_votes(u2, html_section, [html_fix2, massive_fix])
-        set_user_votes(u3, html_section, [massive_fix])
+        fix1, fix2 = self.changes(2, s1)
+        fix3 = self.changes(1, s1, s2, s3)
+        
+        set_user_votes(u1, s1, [fix1])
+        set_user_votes(u2, s1, [fix2, fix3])
+        set_user_votes(u3, s1, [fix3])
                 
         winners = find_winners_av()
         self.assertEqual(len(winners), 1)
-        change, prefs_dic = winners[0]
-        self.assertEqual((change.name, prefs_dic), ('massive_fix', {1:1, 2:1}))
+        change, prefs = winners[0]
+        self.assertEqual((change.name, prefs), (fix3.name, {1:1, 2:1}))
 
     def test_av_two_competing_sections(self):
         u1, u2, u3, u4, u5 = self.users(5)
@@ -100,8 +99,8 @@ class AVTests(TestCase):
                 
         winners = find_winners_av()
         self.assertEqual(len(winners), 1)
-        change, prefs_dic = winners[0]
-        self.assertEqual((change.name, prefs_dic), (fix1.name, {1:5}))
+        change, prefs = winners[0]
+        self.assertEqual((change.name, prefs), (fix1.name, {1:5}))
         
     def test_av_no_winners(self):
         u1, u2, u3, u4, u5 = self.users(5)
@@ -132,5 +131,5 @@ class AVTests(TestCase):
 
         winners = find_winners_av()
         self.assertEqual(len(winners), 1)
-        change, num_votes = winners[0]
-        self.assertEqual((change.name, num_votes), (f2.name, {1:2, 2:1}))
+        change, prefs = winners[0]
+        self.assertEqual((change.name, prefs), (f2.name, {1:2, 2:1}))
