@@ -1,9 +1,33 @@
 from django.test import TestCase
 
 from voting.models import *
+from voting.av import tie_break
 from django.contrib.auth.models import User
 
-class AVTest(TestCase):
+class TieBreaks(TestCase):
+    def test_simple(self):
+        c, p = tie_break([('c1', {1:2}), ('c2', {1:1, 2:10})])
+        self.assertEqual((c, p), ('c1', {1:2}))
+
+    def test_simple2(self):
+        c, p = tie_break([('c1', {2:4}), ('c2', {1:1})])
+        self.assertEqual((c, p), ('c2', {1:1}))
+
+    def test_simple3(self):
+        c, p = tie_break([('c1', {1:1, 2:1, 3:1, 4:4}), ('c2', {1:1, 2:1, 3:1, 4:4})])
+        # will pick randomly
+        self.assertEqual(p, {1:1, 2:1, 3:1, 4:4})
+
+    def test_simple4(self):
+        c, p = tie_break([('c1', {1:1, 2:1, 3:1, 4:4}), ('c2', {1:1, 2:1, 3:1, 4:0})])
+        self.assertEqual((c, p), ('c1', {1:1, 2:1, 3:1, 4:4}))
+
+    def test_simple5(self):
+        c, p = tie_break([('c1', {10:1}), ('c2', {24:1}), ('c3', {100:1, 9:2})])
+        self.assertEqual((c, p), ('c3', {100:1, 9:2}))
+
+
+class AVTests(TestCase):
     def users(self, count):
         results = []
         for i in range(count):
@@ -59,8 +83,8 @@ class AVTest(TestCase):
                 
         winners = find_winners_av()
         self.assertEqual(len(winners), 1)
-        change, num_votes = winners[0]
-        self.assertEqual((change.name, num_votes), ('massive_fix', 2))
+        change, prefs_dic = winners[0]
+        self.assertEqual((change.name, prefs_dic), ('massive_fix', {1:1, 2:1}))
 
     def test_av_two_competing_sections(self):
         u1, u2, u3, u4, u5 = self.users(5)
@@ -76,8 +100,8 @@ class AVTest(TestCase):
                 
         winners = find_winners_av()
         self.assertEqual(len(winners), 1)
-        change, num_votes = winners[0]
-        self.assertEqual((change.name, num_votes), (fix1.name, 5))
+        change, prefs_dic = winners[0]
+        self.assertEqual((change.name, prefs_dic), (fix1.name, {1:5}))
         
     def test_av_no_winners(self):
         u1, u2, u3, u4, u5 = self.users(5)
@@ -102,11 +126,11 @@ class AVTest(TestCase):
         for u in [u1, u2]:
             set_user_votes(u, s1, [f1, f3])
         for u in [u3, u4]:
-            set_user_votes(u, s1, [f2])
+            set_user_votes(u, s1, [f2, f3])
             
-        set_user_votes(u5, s1, [f3])
+        set_user_votes(u5, s1, [f3, f2])
 
         winners = find_winners_av()
         self.assertEqual(len(winners), 1)
         change, num_votes = winners[0]
-        self.assertEqual((change.name, num_votes), (f3.name, 3))
+        self.assertEqual((change.name, num_votes), (f2.name, {1:2, 2:1}))
