@@ -18,8 +18,10 @@ def find_winners_av():
     
     final_winners = {}
     for section, change_list in sections.items():
+        #s = ' '.join([(change.name + ' (' + str(num_votes) + ' votes)') for (change, num_votes) in change_list])
+        #print(section.name + ' winning changes are ' + s)
         change_list.sort(key=lambda x: x[1])
-        change, num_votes = change_list[0]
+        change, num_votes = change_list.pop()
         final_winners[change] = num_votes
         
     return list(final_winners.items())
