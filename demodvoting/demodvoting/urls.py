@@ -2,10 +2,9 @@ from django.conf.urls import patterns, include, url
 
 from django.contrib import admin
 admin.autodiscover()
-from demodvoting.admin import *
 
 urlpatterns = patterns('',
-    url(r'^pullrequests/', include('pullrequests.urls')),
+    url(r'^changes/', include('changes.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

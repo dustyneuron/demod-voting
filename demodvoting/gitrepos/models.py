@@ -27,7 +27,7 @@ class GitRepo(models.Model):
         unique_together = (('name', 'branch'),)
 
 class PullRequest(models.Model):
-    key = models.CharField(primary_key=True, max_length=200)
+    id = models.CharField(primary_key=True, max_length=200)
     git_user = models.ForeignKey(GitUser, blank=True, null=True)
         
     issue_id = models.IntegerField(default=0)
@@ -51,7 +51,7 @@ class PullRequest(models.Model):
             del args['git_user']
         except KeyError:
             pass
-        args['key'] = cls.create_key(pr_data)
+        args['id'] = cls.create_key(pr_data)
         #args['git_user'] = GitUser.objects.get(github_name=pr_data['username'])
         args['repo'] = GitRepo.objects.get(name=pr_data['repo'], branch=pr_data['base_ref'])
         return args

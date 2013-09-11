@@ -2,12 +2,13 @@ from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
 
 from gitrepos.models import PullRequest
+from voting.models import Change
 
 import sys
 import json
 
 class Command(BaseCommand):
-    help = 'Creates pull request(s) with JSON list read from stdin'
+    help = 'Creates pull request change(s) with JSON list read from stdin'
     
     def handle(self, *args, **options):
         js_data = ''

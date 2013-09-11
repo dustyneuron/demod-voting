@@ -11,10 +11,11 @@ class Voter(models.Model):
         return '<Voter ' + str(self.user.username) + '>'
 
 class Section(models.Model):
-    name = models.CharField(max_length=200)            
+    content_type = models.ForeignKey(ContentType, null=True, blank=True)
+    object_id = models.CharField(max_length=200)
+    content_object = generic.GenericForeignKey('content_type', 'object_id')
 
 class Change(models.Model):
-    name = models.CharField(max_length=200)
     sections = models.ManyToManyField(Section)
     
     content_type = models.ForeignKey(ContentType, null=True, blank=True)

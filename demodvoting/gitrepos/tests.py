@@ -16,3 +16,4 @@ class SimpleTest(TestCase):
         pr.save(force_insert=True)
         
         self.assertEqual(pr.repo_id, r.id)
+

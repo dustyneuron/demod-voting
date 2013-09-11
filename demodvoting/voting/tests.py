@@ -48,8 +48,7 @@ class AVTests(TestCase):
     def sections(self, count):
         results = []
         for i in range(count):
-            u = Section(name='section' + str(self.section_inc))
-            self.section_inc += 1
+            u = Section()
             u.save()
             results.append(u)
         if count > 1:
@@ -59,8 +58,7 @@ class AVTests(TestCase):
     def changes(self, count, *sections):
         results = []
         for i in range(count):
-            u = Change(name='change' + str(self.change_inc))
-            self.change_inc += 1
+            u = Change()
             u.save()
             for s in sections:
                 u.sections.add(s)
@@ -71,8 +69,6 @@ class AVTests(TestCase):
         
     def setUp(self):
         self.user_inc = 1
-        self.section_inc = 1
-        self.change_inc = 1
     
     def test_av_simple(self):
         u1, u2, u3 = self.users(3)
@@ -89,7 +85,7 @@ class AVTests(TestCase):
         winners = find_winners()
         self.assertEqual(len(winners), 1)
         change, prefs = winners[0]
-        self.assertEqual((change.name, prefs), (fix3.name, {1:1, 2:1}))
+        self.assertEqual((change.id, prefs), (fix3.id, {1:1, 2:1}))
 
     def test_av_two_competing_sections(self):
         u1, u2, u3, u4, u5 = self.users(5)
@@ -106,7 +102,7 @@ class AVTests(TestCase):
         winners = find_winners()
         self.assertEqual(len(winners), 1)
         change, prefs = winners[0]
-        self.assertEqual((change.name, prefs), (fix1.name, {1:5}))
+        self.assertEqual((change.id, prefs), (fix1.id, {1:5}))
         
     def test_av_no_winners(self):
         u1, u2, u3, u4, u5 = self.users(5)
@@ -138,7 +134,7 @@ class AVTests(TestCase):
         winners = find_winners()
         self.assertEqual(len(winners), 1)
         change, prefs = winners[0]
-        self.assertEqual((change.name, prefs), (f2.name, {1:2, 2:1}))
+        self.assertEqual((change.id, prefs), (f2.id, {1:2, 2:1}))
 
     def test_av_priorities2(self):
         u1, u2, u3, u4, u5 = self.users(5)

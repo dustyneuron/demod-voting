@@ -131,6 +131,7 @@ INSTALLED_APPS = (
     
     'gitrepos',
     'voting',
+    'changes',
 )
 
 # A sample logging configuration. The only tangible logging
