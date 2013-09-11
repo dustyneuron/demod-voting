@@ -1,0 +1,830 @@
+[
+{
+    "pk": 1, 
+    "fields": {
+        "name": "permission", 
+        "model": "permission", 
+        "app_label": "auth"
+    }, 
+    "model": "contenttypes.contenttype"
+},
+{
+    "pk": 2, 
+    "fields": {
+        "name": "group", 
+        "model": "group", 
+        "app_label": "auth"
+    }, 
+    "model": "contenttypes.contenttype"
+},
+{
+    "pk": 3, 
+    "fields": {
+        "name": "user", 
+        "model": "user", 
+        "app_label": "auth"
+    }, 
+    "model": "contenttypes.contenttype"
+},
+{
+    "pk": 4, 
+    "fields": {
+        "name": "content type", 
+        "model": "contenttype", 
+        "app_label": "contenttypes"
+    }, 
+    "model": "contenttypes.contenttype"
+},
+{
+    "pk": 5, 
+    "fields": {
+        "name": "session", 
+        "model": "session", 
+        "app_label": "sessions"
+    }, 
+    "model": "contenttypes.contenttype"
+},
+{
+    "pk": 6, 
+    "fields": {
+        "name": "site", 
+        "model": "site", 
+        "app_label": "sites"
+    }, 
+    "model": "contenttypes.contenttype"
+},
+{
+    "pk": 7, 
+    "fields": {
+        "name": "log entry", 
+        "model": "logentry", 
+        "app_label": "admin"
+    }, 
+    "model": "contenttypes.contenttype"
+},
+{
+    "pk": 8, 
+    "fields": {
+        "name": "git user", 
+        "model": "gituser", 
+        "app_label": "gitrepos"
+    }, 
+    "model": "contenttypes.contenttype"
+},
+{
+    "pk": 9, 
+    "fields": {
+        "name": "git repo", 
+        "model": "gitrepo", 
+        "app_label": "gitrepos"
+    }, 
+    "model": "contenttypes.contenttype"
+},
+{
+    "pk": 10, 
+    "fields": {
+        "name": "pull request", 
+        "model": "pullrequest", 
+        "app_label": "gitrepos"
+    }, 
+    "model": "contenttypes.contenttype"
+},
+{
+    "pk": 11, 
+    "fields": {
+        "name": "voter", 
+        "model": "voter", 
+        "app_label": "voting"
+    }, 
+    "model": "contenttypes.contenttype"
+},
+{
+    "pk": 12, 
+    "fields": {
+        "name": "section", 
+        "model": "section", 
+        "app_label": "voting"
+    }, 
+    "model": "contenttypes.contenttype"
+},
+{
+    "pk": 13, 
+    "fields": {
+        "name": "change", 
+        "model": "change", 
+        "app_label": "voting"
+    }, 
+    "model": "contenttypes.contenttype"
+},
+{
+    "pk": 14, 
+    "fields": {
+        "name": "vote", 
+        "model": "vote", 
+        "app_label": "voting"
+    }, 
+    "model": "contenttypes.contenttype"
+},
+{
+    "pk": 1, 
+    "fields": {
+        "name": "example.com", 
+        "domain": "example.com"
+    }, 
+    "model": "sites.site"
+},
+{
+    "pk": 1, 
+    "fields": {
+        "name": "democraticd", 
+        "branch": "master", 
+        "description": ""
+    }, 
+    "model": "gitrepos.gitrepo"
+},
+{
+    "pk": "github/democraticd issue #1", 
+    "fields": {
+        "ref": "", 
+        "base_sha": "", 
+        "state": 0, 
+        "title": "Change everything to RED", 
+        "repo": 1, 
+        "description": "I really like red, blue is rubbish.", 
+        "git_user": null, 
+        "issue_id": 1, 
+        "sha": ""
+    }, 
+    "model": "gitrepos.pullrequest"
+},
+{
+    "pk": "github/democraticd issue #2", 
+    "fields": {
+        "ref": "", 
+        "base_sha": "", 
+        "state": 0, 
+        "title": "Add a unicorn to the front page", 
+        "repo": 1, 
+        "description": "Unicorns are the bestest", 
+        "git_user": null, 
+        "issue_id": 2, 
+        "sha": ""
+    }, 
+    "model": "gitrepos.pullrequest"
+},
+{
+    "pk": "github/democraticd issue #5", 
+    "fields": {
+        "ref": "", 
+        "base_sha": "", 
+        "state": 0, 
+        "title": "Add webmail", 
+        "repo": 1, 
+        "description": "Added webmail via uber-hacking powers", 
+        "git_user": null, 
+        "issue_id": 5, 
+        "sha": ""
+    }, 
+    "model": "gitrepos.pullrequest"
+},
+{
+    "pk": "github/democraticd issue #666", 
+    "fields": {
+        "ref": "", 
+        "base_sha": "", 
+        "state": 0, 
+        "title": "DESTROY SERVER", 
+        "repo": 1, 
+        "description": "I LOVE TO WATCH THINGS BURN", 
+        "git_user": null, 
+        "issue_id": 666, 
+        "sha": ""
+    }, 
+    "model": "gitrepos.pullrequest"
+},
+{
+    "pk": 1, 
+    "fields": {
+        "object_id": "1", 
+        "content_type": 9
+    }, 
+    "model": "voting.section"
+},
+{
+    "pk": 1, 
+    "fields": {
+        "sections": [
+            1
+        ], 
+        "object_id": "github/democraticd issue #1", 
+        "content_type": 10
+    }, 
+    "model": "voting.change"
+},
+{
+    "pk": 2, 
+    "fields": {
+        "sections": [
+            1
+        ], 
+        "object_id": "github/democraticd issue #2", 
+        "content_type": 10
+    }, 
+    "model": "voting.change"
+},
+{
+    "pk": 3, 
+    "fields": {
+        "sections": [
+            1
+        ], 
+        "object_id": "github/democraticd issue #5", 
+        "content_type": 10
+    }, 
+    "model": "voting.change"
+},
+{
+    "pk": 4, 
+    "fields": {
+        "sections": [
+            1
+        ], 
+        "object_id": "github/democraticd issue #666", 
+        "content_type": 10
+    }, 
+    "model": "voting.change"
+},
+{
+    "pk": 1, 
+    "fields": {
+        "change": 1, 
+        "priority": 1, 
+        "section": 1, 
+        "voter": 1
+    }, 
+    "model": "voting.vote"
+},
+{
+    "pk": 2, 
+    "fields": {
+        "change": 2, 
+        "priority": 2, 
+        "section": 1, 
+        "voter": 1
+    }, 
+    "model": "voting.vote"
+},
+{
+    "pk": 3, 
+    "fields": {
+        "change": 3, 
+        "priority": 1, 
+        "section": 1, 
+        "voter": 2
+    }, 
+    "model": "voting.vote"
+},
+{
+    "pk": 4, 
+    "fields": {
+        "change": 2, 
+        "priority": 1, 
+        "section": 1, 
+        "voter": 3
+    }, 
+    "model": "voting.vote"
+},
+{
+    "pk": 5, 
+    "fields": {
+        "change": 1, 
+        "priority": 2, 
+        "section": 1, 
+        "voter": 3
+    }, 
+    "model": "voting.vote"
+},
+{
+    "pk": 6, 
+    "fields": {
+        "change": 3, 
+        "priority": 1, 
+        "section": 1, 
+        "voter": 4
+    }, 
+    "model": "voting.vote"
+},
+{
+    "pk": 7, 
+    "fields": {
+        "change": 2, 
+        "priority": 2, 
+        "section": 1, 
+        "voter": 4
+    }, 
+    "model": "voting.vote"
+},
+{
+    "pk": 8, 
+    "fields": {
+        "change": 4, 
+        "priority": 1, 
+        "section": 1, 
+        "voter": 5
+    }, 
+    "model": "voting.vote"
+},
+{
+    "pk": 1, 
+    "fields": {
+        "name": "Can add permission", 
+        "codename": "add_permission", 
+        "content_type": 1
+    }, 
+    "model": "auth.permission"
+},
+{
+    "pk": 2, 
+    "fields": {
+        "name": "Can change permission", 
+        "codename": "change_permission", 
+        "content_type": 1
+    }, 
+    "model": "auth.permission"
+},
+{
+    "pk": 3, 
+    "fields": {
+        "name": "Can delete permission", 
+        "codename": "delete_permission", 
+        "content_type": 1
+    }, 
+    "model": "auth.permission"
+},
+{
+    "pk": 4, 
+    "fields": {
+        "name": "Can add group", 
+        "codename": "add_group", 
+        "content_type": 2
+    }, 
+    "model": "auth.permission"
+},
+{
+    "pk": 5, 
+    "fields": {
+        "name": "Can change group", 
+        "codename": "change_group", 
+        "content_type": 2
+    }, 
+    "model": "auth.permission"
+},
+{
+    "pk": 6, 
+    "fields": {
+        "name": "Can delete group", 
+        "codename": "delete_group", 
+        "content_type": 2
+    }, 
+    "model": "auth.permission"
+},
+{
+    "pk": 7, 
+    "fields": {
+        "name": "Can add user", 
+        "codename": "add_user", 
+        "content_type": 3
+    }, 
+    "model": "auth.permission"
+},
+{
+    "pk": 8, 
+    "fields": {
+        "name": "Can change user", 
+        "codename": "change_user", 
+        "content_type": 3
+    }, 
+    "model": "auth.permission"
+},
+{
+    "pk": 9, 
+    "fields": {
+        "name": "Can delete user", 
+        "codename": "delete_user", 
+        "content_type": 3
+    }, 
+    "model": "auth.permission"
+},
+{
+    "pk": 10, 
+    "fields": {
+        "name": "Can add content type", 
+        "codename": "add_contenttype", 
+        "content_type": 4
+    }, 
+    "model": "auth.permission"
+},
+{
+    "pk": 11, 
+    "fields": {
+        "name": "Can change content type", 
+        "codename": "change_contenttype", 
+        "content_type": 4
+    }, 
+    "model": "auth.permission"
+},
+{
+    "pk": 12, 
+    "fields": {
+        "name": "Can delete content type", 
+        "codename": "delete_contenttype", 
+        "content_type": 4
+    }, 
+    "model": "auth.permission"
+},
+{
+    "pk": 13, 
+    "fields": {
+        "name": "Can add session", 
+        "codename": "add_session", 
+        "content_type": 5
+    }, 
+    "model": "auth.permission"
+},
+{
+    "pk": 14, 
+    "fields": {
+        "name": "Can change session", 
+        "codename": "change_session", 
+        "content_type": 5
+    }, 
+    "model": "auth.permission"
+},
+{
+    "pk": 15, 
+    "fields": {
+        "name": "Can delete session", 
+        "codename": "delete_session", 
+        "content_type": 5
+    }, 
+    "model": "auth.permission"
+},
+{
+    "pk": 16, 
+    "fields": {
+        "name": "Can add site", 
+        "codename": "add_site", 
+        "content_type": 6
+    }, 
+    "model": "auth.permission"
+},
+{
+    "pk": 17, 
+    "fields": {
+        "name": "Can change site", 
+        "codename": "change_site", 
+        "content_type": 6
+    }, 
+    "model": "auth.permission"
+},
+{
+    "pk": 18, 
+    "fields": {
+        "name": "Can delete site", 
+        "codename": "delete_site", 
+        "content_type": 6
+    }, 
+    "model": "auth.permission"
+},
+{
+    "pk": 19, 
+    "fields": {
+        "name": "Can add log entry", 
+        "codename": "add_logentry", 
+        "content_type": 7
+    }, 
+    "model": "auth.permission"
+},
+{
+    "pk": 20, 
+    "fields": {
+        "name": "Can change log entry", 
+        "codename": "change_logentry", 
+        "content_type": 7
+    }, 
+    "model": "auth.permission"
+},
+{
+    "pk": 21, 
+    "fields": {
+        "name": "Can delete log entry", 
+        "codename": "delete_logentry", 
+        "content_type": 7
+    }, 
+    "model": "auth.permission"
+},
+{
+    "pk": 22, 
+    "fields": {
+        "name": "Can add git user", 
+        "codename": "add_gituser", 
+        "content_type": 8
+    }, 
+    "model": "auth.permission"
+},
+{
+    "pk": 23, 
+    "fields": {
+        "name": "Can change git user", 
+        "codename": "change_gituser", 
+        "content_type": 8
+    }, 
+    "model": "auth.permission"
+},
+{
+    "pk": 24, 
+    "fields": {
+        "name": "Can delete git user", 
+        "codename": "delete_gituser", 
+        "content_type": 8
+    }, 
+    "model": "auth.permission"
+},
+{
+    "pk": 25, 
+    "fields": {
+        "name": "Can add git repo", 
+        "codename": "add_gitrepo", 
+        "content_type": 9
+    }, 
+    "model": "auth.permission"
+},
+{
+    "pk": 26, 
+    "fields": {
+        "name": "Can change git repo", 
+        "codename": "change_gitrepo", 
+        "content_type": 9
+    }, 
+    "model": "auth.permission"
+},
+{
+    "pk": 27, 
+    "fields": {
+        "name": "Can delete git repo", 
+        "codename": "delete_gitrepo", 
+        "content_type": 9
+    }, 
+    "model": "auth.permission"
+},
+{
+    "pk": 28, 
+    "fields": {
+        "name": "Can add pull request", 
+        "codename": "add_pullrequest", 
+        "content_type": 10
+    }, 
+    "model": "auth.permission"
+},
+{
+    "pk": 29, 
+    "fields": {
+        "name": "Can change pull request", 
+        "codename": "change_pullrequest", 
+        "content_type": 10
+    }, 
+    "model": "auth.permission"
+},
+{
+    "pk": 30, 
+    "fields": {
+        "name": "Can delete pull request", 
+        "codename": "delete_pullrequest", 
+        "content_type": 10
+    }, 
+    "model": "auth.permission"
+},
+{
+    "pk": 31, 
+    "fields": {
+        "name": "Can add voter", 
+        "codename": "add_voter", 
+        "content_type": 11
+    }, 
+    "model": "auth.permission"
+},
+{
+    "pk": 32, 
+    "fields": {
+        "name": "Can change voter", 
+        "codename": "change_voter", 
+        "content_type": 11
+    }, 
+    "model": "auth.permission"
+},
+{
+    "pk": 33, 
+    "fields": {
+        "name": "Can delete voter", 
+        "codename": "delete_voter", 
+        "content_type": 11
+    }, 
+    "model": "auth.permission"
+},
+{
+    "pk": 34, 
+    "fields": {
+        "name": "Can add section", 
+        "codename": "add_section", 
+        "content_type": 12
+    }, 
+    "model": "auth.permission"
+},
+{
+    "pk": 35, 
+    "fields": {
+        "name": "Can change section", 
+        "codename": "change_section", 
+        "content_type": 12
+    }, 
+    "model": "auth.permission"
+},
+{
+    "pk": 36, 
+    "fields": {
+        "name": "Can delete section", 
+        "codename": "delete_section", 
+        "content_type": 12
+    }, 
+    "model": "auth.permission"
+},
+{
+    "pk": 37, 
+    "fields": {
+        "name": "Can add change", 
+        "codename": "add_change", 
+        "content_type": 13
+    }, 
+    "model": "auth.permission"
+},
+{
+    "pk": 38, 
+    "fields": {
+        "name": "Can change change", 
+        "codename": "change_change", 
+        "content_type": 13
+    }, 
+    "model": "auth.permission"
+},
+{
+    "pk": 39, 
+    "fields": {
+        "name": "Can delete change", 
+        "codename": "delete_change", 
+        "content_type": 13
+    }, 
+    "model": "auth.permission"
+},
+{
+    "pk": 40, 
+    "fields": {
+        "name": "Can add vote", 
+        "codename": "add_vote", 
+        "content_type": 14
+    }, 
+    "model": "auth.permission"
+},
+{
+    "pk": 41, 
+    "fields": {
+        "name": "Can change vote", 
+        "codename": "change_vote", 
+        "content_type": 14
+    }, 
+    "model": "auth.permission"
+},
+{
+    "pk": 42, 
+    "fields": {
+        "name": "Can delete vote", 
+        "codename": "delete_vote", 
+        "content_type": 14
+    }, 
+    "model": "auth.permission"
+},
+{
+    "pk": 1, 
+    "fields": {
+        "is_active": true, 
+        "is_superuser": false, 
+        "is_staff": false, 
+        "username": "user1", 
+        "user_permissions": [], 
+        "groups": [], 
+        "email": "", 
+        "password": "", 
+        "first_name": "", 
+        "last_name": "", 
+        "date_joined": "2013-09-11T20:44:11.995Z", 
+        "last_login": "2013-09-11T20:44:11.995Z"
+    }, 
+    "model": "auth.user"
+},
+{
+    "pk": 2, 
+    "fields": {
+        "is_active": true, 
+        "is_superuser": false, 
+        "is_staff": false, 
+        "username": "user2", 
+        "user_permissions": [], 
+        "groups": [], 
+        "email": "", 
+        "password": "", 
+        "first_name": "", 
+        "last_name": "", 
+        "date_joined": "2013-09-11T20:44:12.230Z", 
+        "last_login": "2013-09-11T20:44:12.230Z"
+    }, 
+    "model": "auth.user"
+},
+{
+    "pk": 3, 
+    "fields": {
+        "is_active": true, 
+        "is_superuser": false, 
+        "is_staff": false, 
+        "username": "user3", 
+        "user_permissions": [], 
+        "groups": [], 
+        "email": "", 
+        "password": "", 
+        "first_name": "", 
+        "last_name": "", 
+        "date_joined": "2013-09-11T20:44:12.408Z", 
+        "last_login": "2013-09-11T20:44:12.407Z"
+    }, 
+    "model": "auth.user"
+},
+{
+    "pk": 4, 
+    "fields": {
+        "is_active": true, 
+        "is_superuser": false, 
+        "is_staff": false, 
+        "username": "user4", 
+        "user_permissions": [], 
+        "groups": [], 
+        "email": "", 
+        "password": "", 
+        "first_name": "", 
+        "last_name": "", 
+        "date_joined": "2013-09-11T20:44:12.564Z", 
+        "last_login": "2013-09-11T20:44:12.563Z"
+    }, 
+    "model": "auth.user"
+},
+{
+    "pk": 5, 
+    "fields": {
+        "is_active": true, 
+        "is_superuser": false, 
+        "is_staff": false, 
+        "username": "user5", 
+        "user_permissions": [], 
+        "groups": [], 
+        "email": "", 
+        "password": "", 
+        "first_name": "", 
+        "last_name": "", 
+        "date_joined": "2013-09-11T20:44:12.708Z", 
+        "last_login": "2013-09-11T20:44:12.708Z"
+    }, 
+    "model": "auth.user"
+},
+{
+    "pk": 1, 
+    "fields": {}, 
+    "model": "voting.voter"
+},
+{
+    "pk": 2, 
+    "fields": {}, 
+    "model": "voting.voter"
+},
+{
+    "pk": 3, 
+    "fields": {}, 
+    "model": "voting.voter"
+},
+{
+    "pk": 4, 
+    "fields": {}, 
+    "model": "voting.voter"
+},
+{
+    "pk": 5, 
+    "fields": {}, 
+    "model": "voting.voter"
+}
+]

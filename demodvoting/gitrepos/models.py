@@ -18,6 +18,9 @@ class GitRepo(models.Model):
     name = models.CharField(max_length=200)
     branch = models.CharField(max_length=200)
     
+    description = models.CharField(max_length=200)
+    html_url = models.URLField()
+    
     @classmethod
     def init_args(cls, r_data):
         return init_args(cls, r_data)
@@ -33,6 +36,8 @@ class PullRequest(models.Model):
     issue_id = models.IntegerField(default=0)
     title = models.CharField(max_length=200)
     description = models.TextField()
+    html_url = models.URLField()
+    
     state = models.IntegerField(default=0)
     
     repo = models.ForeignKey(GitRepo)
@@ -58,6 +63,6 @@ class PullRequest(models.Model):
 
     @classmethod
     def create_key(cls, pr_data):
-        return 'github/' + pr_data['repo'] + '/' + str(pr_data['issue_id'])
+        return 'github/' + pr_data['repo'] + ' issue #' + str(pr_data['issue_id'])
 
 

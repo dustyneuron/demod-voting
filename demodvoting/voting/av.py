@@ -99,12 +99,7 @@ def section_tie_break(section, change_list, find_worst=False):
     
     change_tuples = []
     for change in change_list:
-        prefs = {}
-        for v in Vote.objects.filter(section=section, change=change).all():
-            if v.priority not in prefs:
-                prefs[v.priority] = 0
-            prefs[v.priority] += 1
-            
+        prefs = Vote.do_count(section.id, change.id)
         change_tuples.append((change, prefs))
         
     #print('section tie break: ' + str(change_tuples))
@@ -118,7 +113,7 @@ def section_find_winner(section):
     changes = Change.objects.filter(sections=section)
     first_votes = {}
     for c in changes:
-        first_votes[c] = Vote.objects.filter(section=section, change=c, priority=1).count()
+        first_votes[c] = Vote.do_count(section.id, c.id, 1)
 
     while True:                
         lowest_count, lowest_c = None, None

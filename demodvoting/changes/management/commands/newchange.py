@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
 
 from gitrepos.models import PullRequest
-from voting.models import Change
+from voting.models import Change, Section
 
 import sys
 import json
@@ -19,5 +19,10 @@ class Command(BaseCommand):
         for pr_data in data:
             pr = PullRequest(**PullRequest.init_args(pr_data))
             pr.save(force_insert=True)
+            
+            section = Section.objects.get(content_object=pr.repo)
 
+            change = Change(content_object=pr)
+            change.save()
+            change.sections.add(section)
             

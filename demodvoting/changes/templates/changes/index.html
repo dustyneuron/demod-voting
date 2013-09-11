@@ -1,0 +1,29 @@
+<h1>Changes Requested</h1>
+{% for section in sections %}
+{% with repo=section.content_object %}
+    <h2>Git Repository <a href="{{ repo.html_url }}">{{ repo.name }} (branch: {{ repo.branch }})</a></h2>
+    {% if repo.description %}
+    <p>{{ repo.description }}</p>
+    {% endif %}
+    <ul>
+    {% for change in section.cached_cs %}
+    {% with pr=change.content_object %}
+        <li>
+            <h3><a href="{{ pr.html_url }}">Change #{{ pr.issue_id }}{% if pr.title %} - {{ pr.title }}{% endif %}</a></h3>
+            {% if pr.description %}
+            <p>{{ pr.description }}</p>
+            {% endif %}
+            <ul>
+            {% for priority, n in change.prefs.items %}
+                <li>Preference #{{ priority }} : {{ n }} vote{{ n|pluralize }}</li>
+            {% endfor %}
+            </ul>
+        </li>
+    {% endwith %}
+    {% empty %}
+        <li>No-one has requested any changes to this section yet</li>
+    {% endfor %}
+    </ul>
+{% endwith %}
+{% endfor %}
+

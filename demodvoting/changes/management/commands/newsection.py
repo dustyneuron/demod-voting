@@ -16,7 +16,9 @@ class Command(BaseCommand):
         data = json.loads(js_data)
         
         for repo_data in data:
-            r = GitRepo(**GitRepo.init_args(repo_data))
-            r.save(force_insert=True)
-
+            repo = GitRepo(**GitRepo.init_args(repo_data))
+            repo.save(force_insert=True)
+            
+            section = Section(content_object=repo)
+            section.save()
             
