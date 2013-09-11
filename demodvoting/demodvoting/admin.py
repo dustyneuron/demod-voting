@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 
-from pullrequests.models import GitUser
+from gitrepos.models import GitUser
 from voting.models import Voter
 
 # Define an inline admin descriptor for GitUser model

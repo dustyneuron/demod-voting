@@ -1,13 +1,13 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
 
-from pullrequests.models import PullRequest
+from gitrepos.models import GitRepo
 
 import sys
 import json
 
 class Command(BaseCommand):
-    help = 'Creates pull request(s) with JSON list read from stdin'
+    help = 'Creates git repos(s) with JSON list read from stdin'
     
     def handle(self, *args, **options):
         js_data = ''
@@ -15,8 +15,8 @@ class Command(BaseCommand):
             js_data += line
         data = json.loads(js_data)
         
-        for pr_data in data:
-            pr = PullRequest(**PullRequest.init_args(pr_data))
-            pr.save(force_insert=True)
+        for repo_data in data:
+            r = GitRepo(**GitRepo.init_args(repo_data))
+            r.save(force_insert=True)
 
             
