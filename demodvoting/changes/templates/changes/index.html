@@ -1,29 +1,58 @@
-<h1>Changes Requested</h1>
+{% extends "changes/base.html" %}
+{% load humanize %}
+{% load range %}
+
+{% block title %}Change Requests{% endblock %}
+
+{% block content %}
 {% for section in sections %}
 {% with repo=section.content_object %}
-    <h2>Git Repository <a href="{{ repo.html_url }}">{{ repo.name }} (branch: {{ repo.branch }})</a></h2>
+    <h2>Change requests for <a href="{{ repo.html_url }}">{{ repo.name }} (branch: {{ repo.branch }})</a></h2>
     {% if repo.description %}
     <p>{{ repo.description }}</p>
     {% endif %}
-    <ul>
+
+    <ul class="changes">
     {% for change in section.cached_cs %}
     {% with pr=change.content_object %}
         <li>
-            <h3><a href="{{ pr.html_url }}">Change #{{ pr.issue_id }}{% if pr.title %} - {{ pr.title }}{% endif %}</a></h3>
-            {% if pr.description %}
-            <p>{{ pr.description }}</p>
-            {% endif %}
-            <ul>
-            {% for priority, n in change.prefs.items %}
-                <li>Preference #{{ priority }} : {{ n }} vote{{ n|pluralize }}</li>
-            {% endfor %}
-            </ul>
+            <div class="change_descr">
+                <a href="{{ pr.html_url }}">
+                    <h3>{% if pr.title %}{{ pr.title }} - {% endif %}#{{ pr.issue_id }}</h3>
+                    {% if pr.description %}<p>{{ pr.description }}</p>{% endif %}
+                </a>
+            </div>
+            <div class="change_votes">
+                <fieldset>
+                    <legend>Votes</legend>
+                    <table>
+                    <tbody>
+                    {% for priority, n in change.prefs.items %}
+                        <tr>
+                            <td>{{ priority | ordinal }} choice votes:</td>
+                            <td>{% for x in n|range %}[X]{% endfor %}</td>
+                            <td style="padding-left: 1em">total: {{ n }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    </table>
+                </fieldset>
+            </div>
+            <div class="change_uservote">
+                <form>
+                    <fieldset>
+                    <legend>Your Preference</legend>
+                    {% for c in section.cached_cs %}
+                        <input type="radio" name="pref-{{ change.id }}" id="pref-{{ change.id }}-{{ forloop.counter }}">
+                        <label for="pref-{{ change.id }}-{{ forloop.counter }}">{{ forloop.counter | ordinal }} choice</label>
+                    {% endfor %}
+                    </fieldset>
+                </form>
+            </div>
         </li>
     {% endwith %}
-    {% empty %}
-        <li>No-one has requested any changes to this section yet</li>
     {% endfor %}
     </ul>
 {% endwith %}
 {% endfor %}
-
+{% endblock %}
