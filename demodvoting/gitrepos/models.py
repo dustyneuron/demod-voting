@@ -1,25 +1,30 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+def init_args(cls, pr_data):
+    fields = [f.name for f in cls._meta.fields]
+    args = {}
+    for f in fields:
+        if f in pr_data:
+            args[f] = pr_data[f]
+    return args
+
+
 class GitUser(models.Model):
     user = models.OneToOneField(User, primary_key=True)
     github_name = models.CharField(max_length=100, unique=True)
     
 class GitRepo(models.Model):
-    repo = models.CharField(max_length=200)
+    name = models.CharField(max_length=200)
     branch = models.CharField(max_length=200)
     
     @classmethod
-    def init_args(cls, pr_data):
-        fields = [f.name for f in cls._meta.fields]
-        args = {}
-        for f in fields:
-            args[f] = pr_data[f]
-        return args
+    def init_args(cls, r_data):
+        return init_args(cls, r_data)
         
     class Meta:
-        ordering = ['repo', 'branch']
-        unique_together = (('repo', 'branch'),)
+        ordering = ['name', 'branch']
+        unique_together = (('name', 'branch'),)
 
 class PullRequest(models.Model):
     key = models.CharField(primary_key=True, max_length=200)
@@ -41,18 +46,14 @@ class PullRequest(models.Model):
         
     @classmethod
     def init_args(cls, pr_data):
-        fields = [f.name for f in cls._meta.fields]
-        fields.remove('git_user')
-        fields.remove('key')
-        fields.remove('repo')
-        fields.remove('base_ref')
-        args = {}
-        for f in fields:
-            args[f] = pr_data[f]
-            
-        #args['git_user'] = GitUser.objects.get(github_name=pr_data['username'])
-        args['repo'] = GitRepo.objects.get(repo=pr_data['repo'], branch=pr_data['base_ref'])
+        args = init_args(cls, pr_data)
+        try:
+            del args['git_user']
+        except KeyError:
+            pass
         args['key'] = cls.create_key(pr_data)
+        #args['git_user'] = GitUser.objects.get(github_name=pr_data['username'])
+        args['repo'] = GitRepo.objects.get(name=pr_data['repo'], branch=pr_data['base_ref'])
         return args
 
     @classmethod
