@@ -22,33 +22,29 @@
                     {% if pr.description %}<p>{{ pr.description }}</p>{% endif %}
                 </a>
             </div>
-            <div class="change_votes">
+            <fieldset>
+                <legend>Votes</legend>
+                <table>
+                <tbody>
+                {% for priority, n in change.prefs.items %}
+                    <tr>
+                        <th>{{ priority | ordinal }} choice:</th>
+                        <td>{{ n }} vote{{ n | pluralize }}</td>
+                        <td><meter high='{{ section.threshold }}' max='{{ num_voters }}' value='{{ n }}'>{{ n }} vote{{ n | pluralize }}</meter></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+                </table>
+            </fieldset>
+            <form>
                 <fieldset>
-                    <legend>Votes</legend>
-                    <table>
-                    <tbody>
-                    {% for priority, n in change.prefs.items %}
-                        <tr>
-                            <td>{{ priority | ordinal }} choice votes:</td>
-                            <td>{% for x in n|range %}[X]{% endfor %}</td>
-                            <td style="padding-left: 1em">total: {{ n }}</td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                    </table>
+                <legend>Your Preference</legend>
+                {% for c in section.cached_cs %}
+                    <input type="radio" name="pref-{{ change.id }}" id="pref-{{ change.id }}-{{ forloop.counter }}">
+                    <label for="pref-{{ change.id }}-{{ forloop.counter }}">{{ forloop.counter | ordinal }} choice</label>
+                {% endfor %}
                 </fieldset>
-            </div>
-            <div class="change_uservote">
-                <form>
-                    <fieldset>
-                    <legend>Your Preference</legend>
-                    {% for c in section.cached_cs %}
-                        <input type="radio" name="pref-{{ change.id }}" id="pref-{{ change.id }}-{{ forloop.counter }}">
-                        <label for="pref-{{ change.id }}-{{ forloop.counter }}">{{ forloop.counter | ordinal }} choice</label>
-                    {% endfor %}
-                    </fieldset>
-                </form>
-            </div>
+            </form>
         </li>
     {% endwith %}
     {% endfor %}

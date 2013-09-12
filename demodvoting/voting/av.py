@@ -108,7 +108,7 @@ def section_tie_break(section, change_list, find_worst=False):
 
 @transaction.commit_on_success
 def section_find_winner(section):
-    win_threshold = Voter.objects.count() / 2
+    win_threshold = Voter.count_eligible() * section.majority_for_change
     
     changes = Change.objects.filter(sections=section)
     first_votes = {}
