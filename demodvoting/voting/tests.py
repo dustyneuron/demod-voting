@@ -16,8 +16,7 @@ class TestUtils:
             u = User(username='user' + str(self.user_inc))
             self.user_inc += 1
             u.save()
-            v = Voter(user=u)
-            v.save()
+            v = Voter.objects.get(user=u)
             results.append(v)
         if count > 1:
             return tuple(results)

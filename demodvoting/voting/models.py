@@ -4,6 +4,17 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 
+from django.db.models import signals
+from django.dispatch import receiver
+
+def add_voter_hook(sender, **kwargs):
+    if kwargs.get('raw') or not kwargs.get('created'):
+        return
+    u = kwargs['instance']
+    Voter(user=u).save()
+
+signals.post_save.connect(add_voter_hook, sender=User, dispatch_uid="add_voter_hook_id")
+
 class Voter(models.Model):
     user = models.OneToOneField(User, primary_key=True)
     has_vote = models.BooleanField(default=True)

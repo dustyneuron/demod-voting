@@ -1,6 +1,18 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+from django.db.models import signals
+from django.dispatch import receiver
+
+def add_gituser_hook(sender, **kwargs):
+    if kwargs.get('raw') or not kwargs.get('created'):
+        return
+    u = kwargs['instance']
+    GitUser(user=u).save()
+
+signals.post_save.connect(add_gituser_hook, sender=User, dispatch_uid="add_gituser_hook_id")
+
+
 def init_args(cls, pr_data):
     fields = [f.name for f in cls._meta.fields]
     args = {}
@@ -12,7 +24,7 @@ def init_args(cls, pr_data):
 
 class GitUser(models.Model):
     user = models.OneToOneField(User, primary_key=True)
-    github_name = models.CharField(max_length=100, unique=True)
+    github_name = models.CharField(max_length=100, db_index=True)
     
 class GitRepo(models.Model):
     name = models.CharField(max_length=200)
