@@ -20,6 +20,7 @@
             <figcaption><h3>{% if pr.title %}{{ pr.title }}<span style="float:right">{% endif %}#{{ pr.issue_id }}</span></h3></figcaption>
             {% if pr.description %}<p>{{ pr.description }}</p>{% endif %}
             
+            <p>
             <fieldset>
                 <legend>Votes</legend>
                 <table>
@@ -34,11 +35,14 @@
                 </tbody>
                 </table>
             </fieldset>
+            </p>
+            
             <form>
                 <fieldset>
-                <legend>Your Preference</legend>
-                    <input type="radio" name="pref-{{ change.id }}" id="pref-{{ change.id }}-not-wanted" checked="checked">
-                    <label style="padding-right: 5%" for="pref-{{ change.id }}-not-wanted">I don't want this</label>
+                    <legend>Your vote</legend>
+                    <label style="padding-right:5%"><input type="checkbox">I want this</input></label>
+                    
+                    <span>Preferred order (drag and drop):</span>
                 {% for c in section.cached_cs %}
                     <input type="radio" name="pref-{{ change.id }}" id="pref-{{ change.id }}-{{ forloop.counter }}">
                     <label for="pref-{{ change.id }}-{{ forloop.counter }}">{{ forloop.counter | ordinal }} choice</label>
