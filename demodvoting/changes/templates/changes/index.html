@@ -16,12 +16,10 @@
     {% for change in section.cached_cs %}
     {% with pr=change.content_object %}
         <li>
-            <div class="change_descr">
-                <a href="{{ pr.html_url }}">
-                    <h3>{% if pr.title %}{{ pr.title }} - {% endif %}#{{ pr.issue_id }}</h3>
-                    {% if pr.description %}<p>{{ pr.description }}</p>{% endif %}
-                </a>
-            </div>
+            <figure>
+            <figcaption><h3>{% if pr.title %}{{ pr.title }}<span style="float:right">{% endif %}#{{ pr.issue_id }}</span></h3></figcaption>
+            {% if pr.description %}<p>{{ pr.description }}</p>{% endif %}
+            
             <fieldset>
                 <legend>Votes</legend>
                 <table>
@@ -39,12 +37,19 @@
             <form>
                 <fieldset>
                 <legend>Your Preference</legend>
+                    <input type="radio" name="pref-{{ change.id }}" id="pref-{{ change.id }}-not-wanted" checked="checked">
+                    <label style="padding-right: 5%" for="pref-{{ change.id }}-not-wanted">I don't want this</label>
                 {% for c in section.cached_cs %}
                     <input type="radio" name="pref-{{ change.id }}" id="pref-{{ change.id }}-{{ forloop.counter }}">
                     <label for="pref-{{ change.id }}-{{ forloop.counter }}">{{ forloop.counter | ordinal }} choice</label>
                 {% endfor %}
                 </fieldset>
             </form>
+            
+            <p>
+                <a href="{{ pr.html_url }}"><button type="button"><p>Discuss and view code changes on GitHub</p></button></a>
+            </p>
+            </figure>
         </li>
     {% endwith %}
     {% endfor %}
