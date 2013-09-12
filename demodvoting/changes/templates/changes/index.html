@@ -11,48 +11,73 @@
     {% if repo.description %}
     <p>{{ repo.description }}</p>
     {% endif %}
+    
+    <figure>
+        <figcaption><h3>Preferred order of changes you want (drag and drop):</h3></figcaption>
+        <table>
+        <tbody class="preferred_changes-{{ section.id }}">
+            {% for change in section.cached_cs %}
+            {% with pr=change.content_object %}
+                <tr>
+                    <td>#<span class="preferred_counter">{{ forloop.counter }}</span></td>
+                    <td>{{ pr.title }}</td>
+                    <td><button type="button">Remove</button></td>
+                </tr>
+            {% endwith %}
+            {% endfor %}
+        </tbody>
+        </table>
+    </figure>
+
+    <script>
+    $(function() {
+        $(".preferred_changes-{{ section.id }}").sortable({
+            stop: function(event, ui) {
+                $('.preferred_changes-{{ section.id }} tr').each(function(i) {
+                    $(this).find('.preferred_counter').text(++i);
+                });
+            }
+        });
+        $(".preferred_changes-{{ section.id }}").disableSelection();
+    });
+    </script>
 
     <ul class="changes">
     {% for change in section.cached_cs %}
     {% with pr=change.content_object %}
         <li>
             <figure>
-            <figcaption><h3>{% if pr.title %}{{ pr.title }}<span style="float:right">{% endif %}#{{ pr.issue_id }}</span></h3></figcaption>
+            <figcaption><h3>{{ pr.title }}<span style="float:right">#{{ pr.issue_id }}</span></h3></figcaption>
             {% if pr.description %}<p>{{ pr.description }}</p>{% endif %}
             
-            <p>
-            <fieldset>
-                <legend>Votes</legend>
-                <table>
-                <tbody>
-                {% for priority, n in change.prefs.items %}
-                    <tr>
-                        <th>{{ priority | ordinal }} choice:</th>
-                        <td>{{ n }} vote{{ n | pluralize }}</td>
-                        <td><meter high='{{ section.threshold }}' max='{{ num_voters }}' value='{{ n }}'>{{ n }} vote{{ n | pluralize }}</meter></td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-                </table>
-            </fieldset>
-            </p>
-            
-            <form>
-                <fieldset>
+            <form style="float: left; clear: left; width:25%; margin-right:1em">
+                <fieldset style="margin-bottom:0.5em">
                     <legend>Your vote</legend>
                     <label style="padding-right:5%"><input type="checkbox">I want this</input></label>
-                    
-                    <span>Preferred order (drag and drop):</span>
-                {% for c in section.cached_cs %}
-                    <input type="radio" name="pref-{{ change.id }}" id="pref-{{ change.id }}-{{ forloop.counter }}">
-                    <label for="pref-{{ change.id }}-{{ forloop.counter }}">{{ forloop.counter | ordinal }} choice</label>
-                {% endfor %}
+                </fieldset>
+                
+                <a href="{{ pr.html_url }}"><button style="width:100%" type="button"><p>Discuss and view code changes on GitHub</p></button></a>
+            </form>
+
+            <form style="float: left; clear: right">
+                <fieldset>
+                    <legend>Votes</legend>
+                    <table>
+                    <tbody>
+                    {% for priority, n in change.prefs.items %}
+                        <tr>
+                            <th>{{ priority | ordinal }} choice:</th>
+                            <td>{{ n }} vote{{ n | pluralize }}</td>
+                            <td><meter high='{{ section.threshold }}' max='{{ num_voters }}' value='{{ n }}'>{{ n }} vote{{ n | pluralize }}</meter></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    </table>
                 </fieldset>
             </form>
-            
-            <p>
-                <a href="{{ pr.html_url }}"><button type="button"><p>Discuss and view code changes on GitHub</p></button></a>
-            </p>
+                        
+            <div style="float: none; clear: both">
+            </div>
             </figure>
         </li>
     {% endwith %}
