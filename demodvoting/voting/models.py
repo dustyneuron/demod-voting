@@ -63,6 +63,9 @@ class Vote(models.Model):
             ('voter', 'section', 'change'),
             ('voter', 'section', 'priority'),
             )
+        index_together = [
+            ["section", "change", "priority"],
+            ]
     
     @classmethod
     def do_count(cls, section_id, change_id, priority=None, add_zeros=False):
