@@ -71,16 +71,17 @@ class Vote(models.Model):
         
         prefs = {}
         max_pri = 0
-        for v in cls.objects.filter(section_id=section_id, change_id=change_id).all():
-            if v.priority not in prefs:
-                prefs[v.priority] = 0
-            prefs[v.priority] += 1
-            max_pri = max(v.priority, max_pri)
+        all_votes = cls.objects.filter(section_id=section_id, change_id=change_id)
+        p_list = all_votes.order_by('priority').values_list('priority', flat=True).distinct()
+        for p in p_list:
+            prefs[p] = all_votes.filter(priority=p).count()
+            max_pri = max(p, max_pri)
         if add_zeros:
             for n in range(1, max_pri):
                 if n not in prefs:
                     prefs[n] = 0
-        return prefs
+        return prefs        
+        
 
 
 @transaction.commit_on_success
