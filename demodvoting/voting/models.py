@@ -87,10 +87,12 @@ class Vote(models.Model):
 @transaction.commit_on_success
 def set_user_votes(voter, section, ordered_changes):
     Vote.objects.filter(voter=voter, section=section).delete()
-    priority = 1
-    for c in ordered_changes:
+    
+    vote_list = []
+    for p, c in enumerate(ordered_changes, 1):
         if not c.sections.filter(pk=section.pk).exists():
             raise Exception('change section invalid - ' + str(list(c.sections.all())))
-            
-        Vote(voter=voter, section=section, change=c, priority=priority).save()
-        priority += 1
+
+        vote_list.append(Vote(voter=voter, section=section, change=c, priority=p))
+        
+    Vote.objects.bulk_create(vote_list)
