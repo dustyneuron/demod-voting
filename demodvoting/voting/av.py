@@ -110,9 +110,8 @@ def section_tie_break(section, change_list, find_worst=False):
 def section_find_winner(section):
     win_threshold = Voter.count_eligible() * section.majority_for_change
     
-    changes = Change.objects.filter(sections=section)
     first_votes = {}
-    for c in changes:
+    for c in section.change_set.all():
         first_votes[c] = Vote.do_count(section.id, c.id, 1)
 
     while True:                
@@ -129,7 +128,7 @@ def section_find_winner(section):
         elim_cands = [t[0] for t in tuple_list if t[1] == lowest_count]
         lowest_c, _ = section_tie_break(section, elim_cands, find_worst=True)
                     
-        # re-assign votes for lowest_c to next pref
+        # re-assign votes for lowest_c to next pref - TODO: optimize!
         for orig_vote in Vote.objects.filter(section=section, change=lowest_c):
             alternates = Vote.objects.filter(voter=orig_vote.voter, section=section, priority__gt=orig_vote.priority)
             if len(alternates) > 0:
