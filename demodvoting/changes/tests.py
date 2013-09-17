@@ -19,6 +19,7 @@ class SimpleTest(TestCase, TestUtils):
         section = Section(content_object=repo)
         section.save()
         self.assertEqual(section.content_object.id, repo.id)
+        section = section.id
         
         pr_list = [
             {
@@ -64,7 +65,7 @@ class SimpleTest(TestCase, TestUtils):
             c.save()
             c.sections.add(section)
             self.assertEqual(c.content_object.id, pr.id)
-            change[c.content_object.issue_id] = c
+            change[c.content_object.issue_id] = c.id
         
         u1, u2, u3, u4, u5 = self.voters(5)
         

@@ -70,11 +70,11 @@ class Vote(models.Model):
     @classmethod
     def do_count(cls, section_id, change_id, priority=None, add_zeros=False):
         if priority:
-            return cls.objects.filter(section_id=section_id, change_id=change_id, priority=priority).count()
+            return cls.objects.filter(section=section_id, change=change_id, priority=priority).count()
         
         prefs = {}
         max_pri = 0
-        all_votes = cls.objects.filter(section_id=section_id, change_id=change_id)
+        all_votes = cls.objects.filter(section=section_id, change=change_id)
         p_list = all_votes.order_by('priority').values_list('priority', flat=True).distinct()
         for p in p_list:
             prefs[p] = all_votes.filter(priority=p).count()
@@ -88,14 +88,15 @@ class Vote(models.Model):
 
 
 @transaction.commit_on_success
-def set_user_votes(voter, section, ordered_changes):
-    Vote.objects.filter(voter=voter, section=section).delete()
+def set_user_votes(voter_pk, section_id, ordered_change_ids):
+    Vote.objects.filter(voter=voter_pk, section=section_id).delete()
+    
+    matching_changes = Section.objects.get(id=section_id).change_set.filter(id__in=ordered_change_ids)
+    if matching_changes.values_list('id', flat=True).count() != len(ordered_change_ids):
+        raise Exception('set_user_votes changes do not match section - ' + str(list(matching_changes)))
     
     vote_list = []
-    for p, c in enumerate(ordered_changes, 1):
-        if not c.sections.filter(pk=section.pk).exists():
-            raise Exception('change section invalid - ' + str(list(c.sections.all())))
-
-        vote_list.append(Vote(voter=voter, section=section, change=c, priority=p))
+    for p, c in enumerate(ordered_change_ids, 1):
+        vote_list.append(Vote(voter_id=voter_pk, section_id=section_id, change_id=c, priority=p))
         
     Vote.objects.bulk_create(vote_list)

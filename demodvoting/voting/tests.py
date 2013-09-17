@@ -17,7 +17,7 @@ class TestUtils:
             self.user_inc += 1
             u.save()
             v = Voter.objects.get(user=u)
-            results.append(v)
+            results.append(v.pk)
         if count > 1:
             return tuple(results)
         return results[0]
@@ -27,19 +27,18 @@ class TestUtils:
         for i in range(count):
             u = Section()
             u.save()
-            results.append(u)
+            results.append(u.id)
         if count > 1:
             return tuple(results)
         return results[0]
         
-    def changes(self, count, *sections):
+    def changes(self, count, *section_ids):
         results = []
         for i in range(count):
             u = Change()
             u.save()
-            for s in sections:
-                u.sections.add(s)
-            results.append(u)
+            u.sections.add(*section_ids)
+            results.append(u.id)
         if count > 1:
             return tuple(results)
         return results[0]
@@ -91,7 +90,7 @@ class AVTests(TestCase, TestUtils):
         winners = find_winners()
         self.assertEqual(len(winners), 1)
         change, prefs = winners[0]
-        self.assertEqual((change.id, prefs), (fix3.id, {1:1, 2:1}))
+        self.assertEqual((change.id, prefs), (fix3, {1:1, 2:1}))
 
     def test_av_two_competing_sections(self):
         u1, u2, u3, u4, u5 = self.voters(5)
@@ -108,7 +107,7 @@ class AVTests(TestCase, TestUtils):
         winners = find_winners()
         self.assertEqual(len(winners), 1)
         change, prefs = winners[0]
-        self.assertEqual((change.id, prefs), (fix1.id, {1:5}))
+        self.assertEqual((change.id, prefs), (fix1, {1:5}))
         
     def test_av_no_winners(self):
         u1, u2, u3, u4, u5 = self.voters(5)
@@ -140,7 +139,7 @@ class AVTests(TestCase, TestUtils):
         winners = find_winners()
         self.assertEqual(len(winners), 1)
         change, prefs = winners[0]
-        self.assertEqual((change.id, prefs), (f2.id, {1:2, 2:1}))
+        self.assertEqual((change.id, prefs), (f2, {1:2, 2:1}))
 
     def test_av_priorities2(self):
         u1, u2, u3, u4, u5 = self.voters(5)
